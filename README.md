@@ -94,4 +94,5 @@ Het project bestaat uit twee hoofdbestanden:
 - Back-end `device` wordt automatisch gekozen (Cuda > MPS > CPU).
 
 ## Demo
-![https://github.com/user-attachments/assets/e5e6a319-ddfa-42fc-824c-66b88a38b9c2.mp4]
+<video src="https://github.com/user-attachments/assets/e5e6a319-ddfa-42fc-824c-66b88a38b9c2.mp4" controls="controls" style="max-width: 730px;">
+</video>
