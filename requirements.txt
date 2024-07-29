@@ -1,0 +1,8 @@
+datasets
+pandas
+peft
+scikit_learn
+torch
+transformers
+sentence-transformers
+trl

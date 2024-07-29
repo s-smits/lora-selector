@@ -1,0 +1,11 @@
+saved_adapters
+.cursorrules
+cache
+venv_lora_selector
+*.code-workspace
+workflow.md
+.vscode
+logs
+__pycache__
+.DS_Store
+.env
