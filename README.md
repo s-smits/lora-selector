@@ -1,15 +1,20 @@
-Zeker, hier is een aangepaste handleiding voor de code die je hebt gedeeld:
+# Fine-tuned LoRA Selector met TinyLlama en Embeddings
 
-# Fine-tuned LoRA Selector met TinyLlama en BGE Embeddings
+Dit project implementeert een systeem dat LoRA adapters selecteert en gebruikt op basis van fine-tuned embeddings en een TinyLlama taalmodel. Het systeem is specifiek ontworpen om te differentiëren tussen verschillende onderwerpen, zoals steden en geschiedenis.
 
-Dit project implementeert een systeem dat LoRA adapters selecteert en gebruikt op basis van fine-tuned embeddings en een TinyLlama taalmodel.
+## Overzicht
+
+Het systeem werkt als volgt:
+1. Fine-tuned embeddings model categoriseert input in onderwerpen (als voorbeeld steden of geschiedenis).
+2. Op basis van de hoogste embeddings waarde wordt de beste LoRA adapter geselecteerd.
+3. De geselecteerde LoRA wordt toegepast op het TinyLlama model voor gespecialiseerde inferentie.
 
 ## Installatie
 
 1. Clone de repository en navigeer naar de projectmap:
 
 ```bash
-git clone https://github.com/jouw-username/lora-selector
+git clone https://github.com/s-smits/lora-selector
 cd lora-selector
 ```
 
@@ -35,34 +40,55 @@ pip install -r requirements.txt
 
 ## Gebruik
 
-1. Zorg ervoor dat je een `training_data.json` bestand hebt in de hoofdmap van het project met de juiste trainingsgegevens.
+1. Pas het `training_data.json` bestand aan (momenteel voorbeelden van steden- en geschiedenisvragen):
 
-2. Start het hoofdscript:
+```json
+{
+  "text": [
+    {"question": "Wat is de hoofdstad van Nederland?", "answer": "Amsterdam", "subject": "cities"},
+    {"question": "In welk jaar vond de Franse Revolutie plaats?", "answer": "1789", "subject": "history"}
+  ]
+}
+```
+
+2. Start het main script:
 
 ```bash
 python main.py
 ```
 
 Dit script zal:
-- Het embeddings model fine-tunen
-- LoRA adapters trainen
-- Inferentie uitvoeren met het beste LoRA adapter voor elke invoer
+- Het embeddings model fine-tunen om onderscheid te maken tussen steden- en geschiedenisvragen.
+- LoRA adapters trainen voor zowel steden als geschiedenis.
+- Inference met de beste LoRA adapter te kiezen op basis van de hoogste embeddings waarde.
+
+## Voorbeeld
+
+Input: "Welke stad staat bekend om zijn scheve toren?"
+1. Embeddings model categoriseert dit als een stedenvraag.
+2. Steden-LoRA wordt geselecteerd vanwege de hoogste embeddings waarde.
+3. TinyLlama met steden-LoRA genereert een antwoord: "De stad die bekend staat om zijn scheve toren is Pisa, Italië."
+
+Input: "Wie was de eerste president van de Verenigde Staten?"
+1. Embeddings model categoriseert dit als een geschiedenisvraag.
+2. Geschiedenis-LoRA wordt geselecteerd vanwege de hoogste embeddings waarde.
+3. TinyLlama met geschiedenis-LoRA genereert een antwoord: "De eerste president van de Verenigde Staten was George Washington."
 
 ## Structuur
 
 Het project bestaat uit twee hoofdbestanden:
 
-1. `main.py`: Bevat de hoofdlogica voor het trainen van LoRA adapters en het uitvoeren van inferentie.
-2. `finetune_embeddings_model.py`: Bevat de code voor het fine-tunen van het embeddings model.
+1. `main.py`: Bevat de logica voor het trainen van LoRA adapters en inference.
+2. `finetune_embeddings_model.py`: Bevat de code voor het fine-tunen van het embeddings model om onderscheid te maken tussen onderwerpen.
 
-## Aanpassen
+## Tailor-made
 
-- Pas de `base_language_model_name` en `base_embeddings_model_name` variabelen aan in `main.py` als je andere modellen wilt gebruiken.
-- Pas de hyperparameters aan in de `LoraConfig` in `main.py` om de LoRA training te optimaliseren.
-- Pas de `finetune_embeddings_model` functie in `finetune_embeddings_model.py` aan om de embeddings training te wijzigen.
+- Voeg zelf onderwerpen toe via `training_data.json`.
+- Pas de `base_language_model_name` en `base_embeddings_model_name` variabelen aan in `main.py` voor andere modellen.
+- Optimaliseer de LoRA training door de hyperparameters in de `LoraConfig` in `main.py` aan te passen.
 
 ## Opmerkingen
 
-- Dit project maakt gebruik van PyTorch en de Transformers bibliotheek.
-- Zorg ervoor dat je voldoende GPU-geheugen hebt voor het trainen van de modellen.
-- De code is ingesteld om MPS (Metal Performance Shaders) te gebruiken op compatibele Apple-apparaten. Pas de `device` variabele aan als je een andere GPU wilt gebruiken.
+- Dit project maakt met name gebruik van PyTorch en Transformers.
+- Zorg voor voldoende GPU/CPU-geheugen, vooral bij het toevoegen van meer onderwerpen (16GB).
+- Back-end `device` wordt automatisch gekozen (Cuda > MPS > CPU).
