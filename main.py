@@ -312,6 +312,7 @@ def run_llm_inference(base_language_model_name, training_data_json, training_dat
         
         # Prepare the messages
         messages = [
+            
             {
                 "role": "system",
                 "content": "You are a helpful AI assistant.",
