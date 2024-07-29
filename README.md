@@ -92,3 +92,6 @@ Het project bestaat uit twee hoofdbestanden:
 - Dit project maakt met name gebruik van PyTorch en Transformers.
 - Zorg voor voldoende GPU/CPU-geheugen, vooral bij het toevoegen van meer onderwerpen (16GB).
 - Back-end `device` wordt automatisch gekozen (Cuda > MPS > CPU).
+
+## Demo
+![https://github.com/user-attachments/assets/e5e6a319-ddfa-42fc-824c-66b88a38b9c2.mp4]
